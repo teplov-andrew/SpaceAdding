@@ -11,13 +11,14 @@ TODO
 ## Структура проекта
 ```
 ├── README.md
-├── config.yaml          # config файл с основными параметрами
-├── eval.py              # скрипт инференса и создание submission файла
+├── config.yaml           # config файл с основными параметрами
+├── eval.py               # скрипт инференса и создание submission файла
 ├── requirements.txt     
-├── train.py             # скрипт дообучения модели
+├── train.py              # скрипт дообучения модели
+├── avito-inference.ipynb # полный инференс через jupyter notebook
 └── utils
-    ├── data_loading.py  # загрузка датасетов
-    ├── dataset_hf.py    # создание HF dataset
+    ├── data_loading.py   # загрузка датасетов
+    ├── dataset_hf.py     # создание HF dataset
     ├── metrics.py
     ├── modeling.py
     └── preprocessing.py
@@ -37,8 +38,9 @@ python train.py data.train_csv=train.csv train.num_train_epochs=5 train.per_devi
 ```
 4. Запуск валидации:
 ```
-python eval.py generate.test_txt_path=dataset_1937770_3.txt checkpoint_path=/final
+python eval.py generate.test_txt_path=dataset_1937770_3.txt generate.checkpoint_path=/final
 ```
+5 (дополнительно). Можно также сделать инференс через jupyter notebook, используй файл `avito-inference.ipynb`. Нужно указать руками пути к датасету и к весами модели.
 !!! Все выходные файлы будут сохраняться в папку output, лучше всего самому указывать точный путь к нужным файлам (путь к датасетам, путь к модели) !!!
 ## Возможные ошибки при запуске 
 Убедитесь, что стоят нужные библиотеки, частые ошибку могут исправить эти комманды:
