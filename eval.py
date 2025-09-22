@@ -28,10 +28,11 @@ def main(cfg: DictConfig):
     print("Config:\n", OmegaConf.to_yaml(cfg, resolve=True))
 
     # модель (если обучали — берём outputs/final)
-    model_dir = os.path.join(cfg.paths.output_dir, "final")
-    model_name_or_path = model_dir if os.path.isdir(model_dir) else cfg.model.pretrained_name
-    tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, cache_dir=cfg.model.cache_dir)
-    model = AutoModelForSeq2SeqLM.from_pretrained(model_name_or_path, cache_dir=cfg.model.cache_dir)
+    # model_dir = os.path.join(cfg.paths.output_dir, "final")
+    # model_name_or_path = model_dir if os.path.isdir(model_dir) else cfg.model.pretrained_name
+    model_path = cfg.generate.checkpoint_path
+    tokenizer = AutoTokenizer.from_pretrained(model_name_or_path)
+    model = AutoModelForSeq2SeqLM.from_pretrained(model_name_or_path)
 
     # загрузка теста (TXT по умолчанию)
     df = load_test_dataframe(

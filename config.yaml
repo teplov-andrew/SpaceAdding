@@ -39,6 +39,7 @@ train:
   seed: 42
 
 generate:
+  checkpoint_path: checkpoint-5054
   use_test_txt: true
   test_txt_path: ${paths.input_dir}/avito-data/dataset_1937770_3.txt
 

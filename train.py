@@ -3,7 +3,7 @@ import hydra
 from omegaconf import DictConfig, OmegaConf
 from transformers import DataCollatorForSeq2Seq, Seq2SeqTrainer, Seq2SeqTrainingArguments
 from utils.modeling import load_model_and_tokenizer
-from utils.data_loading import load_main_dataframe
+from utils.data_loading import load_train_dataframe
 from utils.dataset_hf import build_hf_splits
 from utils.metrics import compute_space_metrics_factory
 
@@ -17,7 +17,7 @@ def main(cfg: DictConfig):
         train_csv=cfg.data.train_csv,
         title_col=cfg.data.columns.title_col,
         use_txt_file=cfg.data.use_txt_file,
-        raw_txt_path=cfg.data.raw_txt_path,
+        # raw_txt_path=cfg.data.raw_txt_path,
     )
 
     # 2) модель/токенайзер
@@ -50,7 +50,7 @@ def main(cfg: DictConfig):
         gradient_accumulation_steps=cfg.train.gradient_accumulation_steps,
         fp16=cfg.train.fp16,
         dataloader_num_workers=cfg.train.dataloader_num_workers,
-        evaluation_strategy=cfg.train.evaluation_strategy,
+        eval_strategy=cfg.train.evaluation_strategy,
         save_strategy=cfg.train.save_strategy,
         report_to=cfg.train.report_to,
         predict_with_generate=False,
