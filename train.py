@@ -17,7 +17,6 @@ def main(cfg: DictConfig):
         train_csv=cfg.data.train_csv,
         title_col=cfg.data.columns.title_col,
         use_txt_file=cfg.data.use_txt_file,
-        # raw_txt_path=cfg.data.raw_txt_path,
     )
 
     # 2) модель/токенайзер
@@ -65,7 +64,6 @@ def main(cfg: DictConfig):
         eval_dataset=tokenized["test"],
         tokenizer=tokenizer,
         data_collator=data_collator,
-        # compute_metrics=compute_metrics,
     )
 
     # 5) обучение
