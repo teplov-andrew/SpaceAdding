@@ -1,0 +1,57 @@
+paths:
+  input_dir: ${oc.env:INPUT_DIR, .}
+  output_dir: ${oc.env:OUTPUT_DIR, ./outputs}
+  cache_dir: ${oc.env:CACHE_DIR, ./hf_cache}
+
+data:
+  train_csv: ${paths.input_dir}/avito-data-texts/res.csv
+  use_txt_file: false
+
+  columns:
+    title_col: base_title
+    id_col: id
+
+  split:
+    test_size: 0.2
+    seed: 42
+
+  max_length: 128
+
+model:
+  pretrained_name: ai-forever/ruT5-base
+  cache_dir: ${paths.cache_dir}
+
+train:
+  learning_rate: 1e-5
+  num_train_epochs: 7
+  per_device_train_batch_size: 16
+  per_device_eval_batch_size: 16
+  weight_decay: 0.0
+  warmup_ratio: 0.0
+  logging_steps: 50
+  save_total_limit: 5
+  gradient_accumulation_steps: 1
+  fp16: false
+  dataloader_num_workers: 4
+  evaluation_strategy: epoch
+  save_strategy: epoch
+  report_to: none
+  seed: 42
+
+generate:
+  use_test_txt: true
+  test_txt_path: ${paths.input_dir}/avito-data/dataset_1937770_3.txt
+
+  test_csv: null
+  test_texts_col: base_title_no_space
+
+  max_length: 128
+  num_beams: 5
+  batch_size: 8
+  output_csv: ${paths.output_dir}/sub1_avito.csv
+
+hydra:
+  run:
+    dir: ${paths.output_dir}/runs/${now:%Y-%m-%d_%H-%M-%S}
+  job:
+    chdir: true
