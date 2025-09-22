@@ -4,7 +4,7 @@ paths:
   cache_dir: ${oc.env:CACHE_DIR, ./hf_cache}
 
 data:
-  train_csv: ${paths.input_dir}/avito-data-texts/res.csv
+  train_csv: /workspace/SpaceAdding/res.csv
   use_txt_file: false
 
   columns:
@@ -23,9 +23,9 @@ model:
 
 train:
   learning_rate: 1e-5
-  num_train_epochs: 7
-  per_device_train_batch_size: 16
-  per_device_eval_batch_size: 16
+  num_train_epochs: 1
+  per_device_train_batch_size: 128
+  per_device_eval_batch_size: 128
   weight_decay: 0.0
   warmup_ratio: 0.0
   logging_steps: 50
@@ -39,9 +39,9 @@ train:
   seed: 42
 
 generate:
-  checkpoint_path: checkpoint-5054
+  checkpoint_path: /workspace/SpaceAdding/outputs/runs/2025-09-22_21-51-22/outputs/final
   use_test_txt: true
-  test_txt_path: ${paths.input_dir}/avito-data/dataset_1937770_3.txt
+  test_txt_path: /workspace/SpaceAdding/dataset_1937770_3.txt
 
   test_csv: null
   test_texts_col: base_title_no_space

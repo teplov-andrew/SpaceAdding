@@ -21,7 +21,7 @@ def main(cfg: DictConfig):
     )
 
     # 2) модель/токенайзер
-    model, tokenizer = load_model_and_tokenizer(cfg.model.pretrained_name, cfg.model.cache_dir)
+    model, tokenizer = load_model_and_tokenizer(cfg.model.pretrained_name)
 
     # 3) датасеты
     tokenized = build_hf_splits(
@@ -65,7 +65,7 @@ def main(cfg: DictConfig):
         eval_dataset=tokenized["test"],
         tokenizer=tokenizer,
         data_collator=data_collator,
-        compute_metrics=compute_metrics,
+        # compute_metrics=compute_metrics,
     )
 
     # 5) обучение

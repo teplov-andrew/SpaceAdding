@@ -28,13 +28,10 @@ def main(cfg: DictConfig):
     print("Config:\n", OmegaConf.to_yaml(cfg, resolve=True))
 
     # модель (если обучали — берём outputs/final)
-    # model_dir = os.path.join(cfg.paths.output_dir, "final")
-    # model_name_or_path = model_dir if os.path.isdir(model_dir) else cfg.model.pretrained_name
     model_path = cfg.generate.checkpoint_path
-    tokenizer = AutoTokenizer.from_pretrained(model_name_or_path)
-    model = AutoModelForSeq2SeqLM.from_pretrained(model_name_or_path)
+    tokenizer = AutoTokenizer.from_pretrained(model_path)
+    model = AutoModelForSeq2SeqLM.from_pretrained(model_path)
 
-    # загрузка теста (TXT по умолчанию)
     df = load_test_dataframe(
         use_test_txt=cfg.generate.use_test_txt,
         test_txt_path=cfg.generate.test_txt_path,
@@ -42,9 +39,12 @@ def main(cfg: DictConfig):
         title_col=cfg.data.columns.title_col,
         test_texts_col=cfg.generate.test_texts_col,
     )
+    new_header = df.iloc[0] 
+    df = df[1:] 
+    df.columns = new_header
 
     # предсказания
-    texts = df["input_text"].tolist()
+    texts = df["text_no_spaces"].tolist()
     preds, pos = predict_space_positions(
         model=model,
         tokenizer=tokenizer,
@@ -56,11 +56,12 @@ def main(cfg: DictConfig):
     # сохранение
     os.makedirs(cfg.paths.output_dir, exist_ok=True)
     out_path = cfg.generate.output_csv
-    pd.DataFrame({
+    df_res = pd.DataFrame({
         "id": df["id"],
-        "predicted_text": preds,
         "predicted_positions": pos
-    }).to_csv(out_path, index=False)
+    })
+    
+    df_res.to_csv(out_path, index=False)
     print(f"Saved predictions to: {out_path}")
 
 
